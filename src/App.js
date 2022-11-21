@@ -2,22 +2,25 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
 
 // pages
 import Home from "./pages/Home"
-import Create from "./pages/Create"
-import Update from "./pages/Update"
-
+import CreateCompany from "./pages/CreateCompany"
+import CreateCompanyComments from "./pages/CreateCompanyComments"
+import CreateInvite from "./pages/CreateInvite"
 
 function App() {
   return (
     <BrowserRouter>
       <nav>
-        <h1>Supa Smoothies</h1>
+        <h1>Data Seeding with Supabase</h1>
         <Link to="/">Home</Link>
-        <Link to="/create">Create New Smoothie</Link>
+        <Link to="/createCompany">Create New Company</Link>
+        <Link to="/createCompanyComments">Create New Company Comments</Link>
+        <Link to="/createInvite">Create Invites</Link>
       </nav>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/create" element={<Create />} />
-        <Route path="/:id" element={<Update />} />
+        <Route path="/createCompany" element={<CreateCompany />} />
+        <Route path="/createCompanyComments" element={<CreateCompanyComments />} />
+        <Route path="/createInvite" element={<CreateInvite />} />
       </Routes>
     </BrowserRouter>
   );

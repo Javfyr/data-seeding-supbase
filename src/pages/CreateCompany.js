@@ -1,16 +1,7 @@
 import supabase from "../config/supabaseClient"
 import { useState } from 'react'
 
-const Create = () => {
-
-//   const id = 30;
-//   const created_at = '2022-01-01 08:00:00+08';
-//   const visible = 1;
-//   const website = 'https://www.himetal.com.sg/';
-//   const name = 'HiMetal Enterprise Pte Ltd';
-//   const bio = 'HiMetal Enterprise specialises in supplying Stainless Steel products in Singapore. We supply a wide range of flat and long products to our valued customers for    '
-//   return `${id},${created_at},${visible},${website},${name},${bio}`;
-
+const CreateCompany = () => {
 
   const [id, setId] = useState('');
   const [created_at, setCreatedAt] = useState('');
@@ -23,8 +14,8 @@ const Create = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if(!id || !visible || !website || !name || !bio){
-      setFormError('Pleasee fill in all the fields correctly')
+    if(!id || !created_at  || !visible || !website || !name || !bio){
+      setFormError('Please fill in all the fields correctly')
       return
     }
 
@@ -45,7 +36,7 @@ const Create = () => {
 
   return (
     <div className="page create">
-      <h2>Seeding Data</h2>
+      <h2>Seeding Companies Table</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor='id'>Id:</label>
         <input
@@ -54,6 +45,7 @@ const Create = () => {
           value={id}
           onChange={(e) => setId(e.target.value)}
         />
+        <br />
 
         <label htmlFor='name'>Name:</label>
         <input
@@ -62,6 +54,7 @@ const Create = () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
+        <br />
 
         <label htmlFor='created_at'>created_at:</label>
         <input
@@ -70,6 +63,7 @@ const Create = () => {
           value={created_at}
           onChange={(e) => setCreatedAt(e.target.value)}
         />
+        <br />
 
         <label htmlFor='bio'>Bio:</label>
         <input
@@ -78,6 +72,7 @@ const Create = () => {
           value={bio}
           onChange={(e) => setBio(e.target.value)}
         />
+        <br />
 
         <label htmlFor='website'>Website:</label>
         <input
@@ -86,6 +81,7 @@ const Create = () => {
           value={website}
           onChange={(e) => setWebsite(e.target.value)}
         />
+        <br />
 
         <label htmlFor='visible'>Visible:</label>
         <input
@@ -94,6 +90,7 @@ const Create = () => {
           value={visible}
           onChange={(e) => setVisible(e.target.value)}
         />
+        <br />
 
         <button>Add data</button>
 
@@ -104,4 +101,4 @@ const Create = () => {
   )
 }
 
-export default Create
+export default CreateCompany
