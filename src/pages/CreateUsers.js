@@ -1,35 +1,65 @@
-import supabase from "../config/supabaseClient";
-import { useState } from "react";
+import { createServiceSupabaseClient } from "../config/supabaseClient";
+import { createServiceSupabaseAdmin } from "../config/supabaseAdmin";
+import { useState, useEffect } from "react";
+import { createClient } from '@supabase/supabase-js';
 
 const CreateUser = () => {
+  //   const [email, setEmail] = useState('');
+  //   const [password, setPassword] = useState('');
+  //   const [email, setEmail] = useState('');
+  //   const [email, setEmail] = useState('');
+  //   const [email, setEmail] = useState('');
+
   const [formError, setFormError] = useState(null);
+
+  useEffect(() => {
+    const signIn = async () => {
+      const supabase = createServiceSupabaseClient();
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: "ahtan@gmail.com",
+        password: "12345",
+      });
+      if (error) {
+        console.log(error);
+      }
+
+      if (data) {
+        console.log(data);
+      }
+    };
+
+    const result = signIn().catch(console.error);
+
+    console.log(result);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { data, error } = await supabase.auth.admin.createUser({
-      email: "javier@gmail.com",
-      password: "password",
-      user_metadata: {
-        // Initial data will be used to populate the user's profile within
-        // the trigger that creates the ums.user record.
-        initial_data: {
-          fullname: "Fok Yanrui Javier",
-          companyid: 4,
-        },
-        invite_token: "bhuv3cvgygffggyftvgyttfc",
-      },
-      phone: "22224444",
-      email_confirm: true,
-    });
+    const supabase = createServiceSupabaseAdmin();
 
-    if (error) {
-      console.log(error);
+    // Then we create the user.
+    const { data: createdUser, error: createUserError } =
+      await supabase.auth.admin.createUser({
+        email: "test@ichat.sp.edu.sg",
+        password: "123456",
+        user_metadata: {
+          initial_data: {
+            fullname: "testtest",
+            companyid: 2,
+          },
+        },
+        phone: "76765677",
+        email_confirm: true,
+      });
+
+    if (createUserError) {
+      console.log(createUserError);
       setFormError("Failed to create user");
     }
 
-    if (data) {
-      console.log(data);
+    if (createdUser) {
+      console.log(createdUser);
       setFormError(null);
     }
   };

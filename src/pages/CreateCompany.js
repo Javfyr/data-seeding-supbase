@@ -12,9 +12,7 @@ const CreateCompany = () => {
   
   useEffect(() => {
     const signIn = async () => {
-      console.log("abc")
       const supabase = createServiceSupabaseClient();
-      // console.log(supabase.auth)
       const { data, error } = await supabase.auth.signInWithPassword({ email: 'ahtan@gmail.com', password: '12345' });
       if (error) {
         console.log(error);
@@ -33,25 +31,6 @@ const CreateCompany = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // const response = await fetch(
-    //   `/api/populateCompanies`,
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    // );
-    // const { data2, error2 } = await supabase.auth.signInWithPassword({ email: 'ahtan@gmail.com', password: '12345' });
-
-    // if (error2) {
-    //   console.log(error2);
-    // }
-
-    // if (data2) {
-    //   console.log(data2);
-    // }
 
     if (!id || !created_at || !visible || !website || !name || !bio) {
       setFormError("Please fill in all the fields correctly");
