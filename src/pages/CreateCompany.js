@@ -1,92 +1,134 @@
-import supabase from "../config/supabaseClient"
-import { useState } from 'react'
+import { createServiceSupabaseClient } from "../config/supabaseClient";
+import { useEffect, useState } from "react";
 
 const CreateCompany = () => {
-
-  const [id, setId] = useState('');
-  const [created_at, setCreatedAt] = useState('');
+  const [id, setId] = useState("");
+  const [created_at, setCreatedAt] = useState("");
   const [visible, setVisible] = useState(null);
-  const [website, setWebsite] = useState('');
-  const [name, setName] = useState('');
-  const [bio, setBio] = useState('');
+  const [website, setWebsite] = useState("");
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
   const [formError, setFormError] = useState(null);
+  
+  useEffect(() => {
+    const signIn = async () => {
+      console.log("abc")
+      const supabase = createServiceSupabaseClient();
+      // console.log(supabase.auth)
+      const { data, error } = await supabase.auth.signInWithPassword({ email: 'ahtan@gmail.com', password: '12345' });
+      if (error) {
+        console.log(error);
+      }
+
+      if (data) {
+        console.log(data);
+      }
+    };
+
+    const result = signIn()
+    .catch(console.error)
+
+    console.log(result);
+  }, [])
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if(!id || !created_at  || !visible || !website || !name || !bio){
-      setFormError('Please fill in all the fields correctly')
-      return
+    // const response = await fetch(
+    //   `/api/populateCompanies`,
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   }
+    // );
+    // const { data2, error2 } = await supabase.auth.signInWithPassword({ email: 'ahtan@gmail.com', password: '12345' });
+
+    // if (error2) {
+    //   console.log(error2);
+    // }
+
+    // if (data2) {
+    //   console.log(data2);
+    // }
+
+    if (!id || !created_at || !visible || !website || !name || !bio) {
+      setFormError("Please fill in all the fields correctly");
+      return;
     }
 
-    const { data, error } = await supabase
-      .from('companies')
-      .insert([{id, name, created_at, bio, website, visible}])
+    // Prepare the supabase client.
+    const serviceSupabase = createServiceSupabaseClient();
 
-      if(error){
-        console.log(error);
-        setFormError('Please fill in all the fields correctly')
-      }
+    const { data, error } = await serviceSupabase
+      .from("companies")
+      .insert([{ id, name, created_at, bio, website, visible }]);
 
-      if(data){
-        console.log(data)
-        setFormError(null)
-      }
-  }
+    if (error) {
+      console.log(error);
+      setFormError("Please fill in all the fields correctly");
+    }
+
+    if (data) {
+      console.log(data);
+      setFormError(null);
+    }
+  };
 
   return (
     <div className="page create">
       <h2>Seeding Companies Table</h2>
       <form onSubmit={handleSubmit}>
-        <label htmlFor='id'>Id:</label>
+        <label htmlFor="id">Id:</label>
         <input
-          type='text'
-          id='id'
+          type="text"
+          id="id"
           value={id}
           onChange={(e) => setId(e.target.value)}
         />
         <br />
 
-        <label htmlFor='name'>Name:</label>
+        <label htmlFor="name">Name:</label>
         <input
-          type='text'
-          id='name'
+          type="text"
+          id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <br />
 
-        <label htmlFor='created_at'>created_at:</label>
+        <label htmlFor="created_at">created_at:</label>
         <input
-          type='text'
-          id='created_at'
+          type="text"
+          id="created_at"
           value={created_at}
           onChange={(e) => setCreatedAt(e.target.value)}
         />
         <br />
 
-        <label htmlFor='bio'>Bio:</label>
+        <label htmlFor="bio">Bio:</label>
         <input
-          type='text'
-          id='bio'
+          type="text"
+          id="bio"
           value={bio}
           onChange={(e) => setBio(e.target.value)}
         />
         <br />
 
-        <label htmlFor='website'>Website:</label>
+        <label htmlFor="website">Website:</label>
         <input
-          type='text'
-          id='website'
+          type="text"
+          id="website"
           value={website}
           onChange={(e) => setWebsite(e.target.value)}
         />
         <br />
 
-        <label htmlFor='visible'>Visible:</label>
+        <label htmlFor="visible">Visible:</label>
         <input
-          type='text'
-          id='visible'
+          type="text"
+          id="visible"
           value={visible}
           onChange={(e) => setVisible(e.target.value)}
         />
@@ -96,9 +138,8 @@ const CreateCompany = () => {
 
         {formError && <p className="error">{formError}</p>}
       </form>
-
     </div>
-  )
-}
+  );
+};
 
-export default CreateCompany
+export default CreateCompany;

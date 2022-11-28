@@ -1,7 +1,7 @@
-import supabase from "../config/supabaseClient"
+import {createServiceSupabaseClient} from "../config/supabaseClient"
 
 const Home = () => {
-  console.log(supabase)
+  console.log(createServiceSupabaseClient)
   
   return (
     <div className="page home">
