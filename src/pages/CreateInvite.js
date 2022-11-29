@@ -1,114 +1,145 @@
-// import supabase from "../config/supabaseClient"
-// import { useState } from 'react'
+import { createServiceSupabaseClient } from "../config/supabaseClient";
+import { useState, useEffect } from "react";
+import { createServiceSupabaseAdmin } from "../config/supabaseAdmin";
 
-// const CreateInvite = () => {
+const CreateInvite = () => {
+  const [id, setId] = useState("");
+  const [created_at, setCreatedAt] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [company, setCompany] = useState("");
+  const [expiry, setExpiry] = useState("");
+  const [token, setToken] = useState("");
+  const [formError, setFormError] = useState(null);
 
-//   const [id, setId] = useState('');
-//   const [created_at, setCreatedAt] = useState('');
-//   const [name, setName] = useState('');
-//   const [email, setEmail] = useState('');
-//   const [company, setCompany] = useState('');
-//   const [expiry, setExpiry] = useState('');
-//   const [token, setToken] = useState('');
-//   const [formError, setFormError] = useState(null);
+  useEffect(() => {
+    const signIn = async () => {
+      const supabase = createServiceSupabaseClient();
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: "ahtan@gmail.com",
+        password: "12345",
+      });
+      if (error) {
+        console.log(error);
+      }
 
-//   const handleSubmit = async (e) => {
-//     e.preventDefault()
+      if (data) {
+        console.log(data);
+      }
+    };
 
-//     if(!id || !created_at || !name || !email || !company || !expiry || !token){
-//       setFormError('Please fill in all the fields correctly')
-//       return
-//     }
+    const result = signIn().catch(console.error);
 
-//     const { data, error } = await supabase
-//       .from('invite')
-//       .insert([{id, created_at, name, email, company, expiry, token}])
+    console.log(result);
+  }, []);
 
-//       if(error){
-//         console.log(error);
-//         setFormError('Please fill in all the fields correctly')
-//       }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-//       if(data){
-//         console.log(data)
-//         setFormError('Data has successfully been inserted into the table')
-//       }
-//   }
+    if (
+      !id ||
+      !created_at ||
+      !name ||
+      !email ||
+      !company ||
+      !expiry ||
+      !token
+    ) {
+      setFormError("Please fill in all the fields correctly");
+      return;
+    }
 
-//   return (
-//     <div className="page create">
-//       <h2>Seeding invite Table</h2>
-//       <form onSubmit={handleSubmit}>
-//         <label htmlFor='id'>Id:</label>
-//         <input
-//           type='text'
-//           id='id'
-//           value={id}
-//           onChange={(e) => setId(e.target.value)}
-//         />
-//         <br />
+    // Prepare the supabase client.
+    const supabase = createServiceSupabaseAdmin();
 
-//         <label htmlFor='created_at'>created_at:</label>
-//         <input
-//           type='text'
-//           id='created_at'
-//           value={created_at}
-//           onChange={(e) => setCreatedAt(e.target.value)}
-//         />
-//         <br />
+    const { data, error } = await supabase
+      .from("invite")
+      .insert([{ id, created_at, name, email, company, expiry, token }]);
 
-//         <label htmlFor='name'>Name:</label>
-//         <input
-//           type='text'
-//           id='name'
-//           value={name}
-//           onChange={(e) => setName(e.target.value)}
-//         />
-//         <br />
+    if (error) {
+      console.log(error);
+      setFormError("Please fill in all the fields correctly");
+    }
 
-//         <label htmlFor='email'>Email:</label>
-//         <input
-//           type='text'
-//           id='email'
-//           value={email}
-//           onChange={(e) => setEmail(e.target.value)}
-//         />
-//         <br />
+    if (data) {
+      console.log(data);
+      setFormError("Data has successfully been inserted into the table");
+    }
+  };
 
-//         <label htmlFor='company'>Company:</label>
-//         <input
-//           type='text'
-//           id='company'
-//           value={company}
-//           onChange={(e) => setCompany(e.target.value)}
-//         />
-//         <br />
+  return (
+    <div className="page create">
+      <h2>Seeding invite Table</h2>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="id">Id:</label>
+        <input
+          type="text"
+          id="id"
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+        />
+        <br />
 
-//         <label htmlFor='expiry'>Expiry:</label>
-//         <input
-//           type='text'
-//           id='expiry'
-//           value={expiry}
-//           onChange={(e) => setExpiry(e.target.value)}
-//         />
-//         <br />
+        <label htmlFor="created_at">created_at:</label>
+        <input
+          type="text"
+          id="created_at"
+          value={created_at}
+          onChange={(e) => setCreatedAt(e.target.value)}
+        />
+        <br />
 
-//         <label htmlFor='token'>Token:</label>
-//         <input
-//           type='text'
-//           id='token'
-//           value={token}
-//           onChange={(e) => setToken(e.target.value)}
-//         />
-//         <br />
+        <label htmlFor="name">Name:</label>
+        <input
+          type="text"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <br />
 
-//         <button>Add data</button>
+        <label htmlFor="email">Email:</label>
+        <input
+          type="text"
+          id="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <br />
 
-//         {formError && <p className="error">{formError}</p>}
-//       </form>
+        <label htmlFor="company">Company:</label>
+        <input
+          type="text"
+          id="company"
+          value={company}
+          onChange={(e) => setCompany(e.target.value)}
+        />
+        <br />
 
-//     </div>
-//   )
-// }
+        <label htmlFor="expiry">Expiry:</label>
+        <input
+          type="text"
+          id="expiry"
+          value={expiry}
+          onChange={(e) => setExpiry(e.target.value)}
+        />
+        <br />
 
-// export default CreateInvite
+        <label htmlFor="token">Token:</label>
+        <input
+          type="text"
+          id="token"
+          value={token}
+          onChange={(e) => setToken(e.target.value)}
+        />
+        <br />
+
+        <button>Add data</button>
+
+        {formError && <p className="error">{formError}</p>}
+      </form>
+    </div>
+  );
+};
+
+export default CreateInvite;
