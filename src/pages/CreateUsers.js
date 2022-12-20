@@ -1,15 +1,9 @@
 import { createServiceSupabaseClient } from "../config/supabaseClient";
 import { createServiceSupabaseAdmin } from "../config/supabaseAdmin";
 import { useState, useEffect } from "react";
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 const CreateUser = () => {
-  //   const [email, setEmail] = useState('');
-  //   const [password, setPassword] = useState('');
-  //   const [email, setEmail] = useState('');
-  //   const [email, setEmail] = useState('');
-  //   const [email, setEmail] = useState('');
-
   const [formError, setFormError] = useState(null);
 
   useEffect(() => {
@@ -41,15 +35,15 @@ const CreateUser = () => {
     // Then we create the user.
     const { data: createdUser, error: createUserError } =
       await supabase.auth.admin.createUser({
-        email: "test@ichat.sp.edu.sg",
-        password: "123456",
+        email: "elongatedmusk@gmail.com",
+        password: "password",
         user_metadata: {
           initial_data: {
-            fullname: "testtest",
-            companyid: 2,
+            fullname: "Elon Musk",
+            companyid: 1,
           },
         },
-        phone: "76765677",
+        phone: "99999999",
         email_confirm: true,
       });
 

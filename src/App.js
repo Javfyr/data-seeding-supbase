@@ -15,7 +15,6 @@ function App() {
       <nav>
         <h1>Data Seeding with Supabase</h1>
         <Link to="/">Home</Link>
-        <Link to="/login">Login</Link>
         <Link to="/createCompany">Create New Company</Link>
         <Link to="/createCompanyComments">Create New Company Comments</Link>
         <Link to="/createInvite">Create Invites</Link>
@@ -27,7 +26,6 @@ function App() {
         <Route path="/createCompanyComments" element={<CreateCompanyComments />} />
         <Route path="/createInvite" element={<CreateInvite />} />
         <Route path="/createUsers" element={<CreateUsers />} />
-        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

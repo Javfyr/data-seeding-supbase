@@ -1,84 +1,107 @@
-// import supabase from "../config/supabaseClient"
-// import { useState } from 'react'
+import { createServiceSupabaseClient } from "../config/supabaseClient";
+import { useState, useEffect } from 'react'
 
-// const CreateCompanyComments = () => {
+const CreateCompanyComments = () => {
 
-//   const [id, setId] = useState('');
-//   const [created_at, setCreatedAt] = useState('');
-//   const [companyid, setCompanyId] = useState(null);
-//   const [comments, setComments] = useState('');
-//   const [formError, setFormError] = useState(null);
+  const [id, setId] = useState('');
+  const [created_at, setCreatedAt] = useState('');
+  const [companyid, setCompanyId] = useState(null);
+  const [comments, setComments] = useState('');
+  const [formError, setFormError] = useState(null);
 
-//   const handleSubmit = async (e) => {
-//     e.preventDefault()
+  useEffect(() => {
+    const signIn = async () => {
+      const supabase = createServiceSupabaseClient();
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: "ahtan@gmail.com",
+        password: "12345",
+      });
+      if (error) {
+        console.log(error);
+      }
 
-//     if(!id || !created_at || !companyid || !comments){
-//       setFormError('Please fill in all the fields correctly')
-//       return
-//     }
+      if (data) {
+        console.log(data);
+      }
+    };
 
-//     const { data, error } = await supabase
-//       .from('companies_comments')
-//       .insert([{id, created_at, companyid, comments}])
+    const result = signIn().catch(console.error);
 
-//       if(error){
-//         console.log(error);
-//         setFormError('Please fill in all the fields correctly')
-//       }
+    console.log(result);
+  }, []);
 
-//       if(data){
-//         console.log(data)
-//         setFormError(null)
-//       }
-//   }
+  const handleSubmit = async (e) => {
+    e.preventDefault()
 
-//   return (
-//     <div className="page create">
-//       <h2>Seeding Companies_comments Table</h2>
-//       <form onSubmit={handleSubmit}>
-//         <label htmlFor='id'>Id:</label>
-//         <input
-//           type='text'
-//           id='id'
-//           value={id}
-//           onChange={(e) => setId(e.target.value)}
-//         />
-//         <br />
+    if(!id || !created_at || !companyid || !comments){
+      setFormError('Please fill in all the fields correctly')
+      return
+    }
 
-//         <label htmlFor='created_at'>created_at:</label>
-//         <input
-//           type='text'
-//           id='created_at'
-//           value={created_at}
-//           onChange={(e) => setCreatedAt(e.target.value)}
-//         />
-//         <br />
+    const supabase = createServiceSupabaseClient();
 
-//         <label htmlFor='companyid'>Company Id:</label>
-//         <input
-//           type='text'
-//           id='bio'
-//           value={companyid}
-//           onChange={(e) => setCompanyId(e.target.value)}
-//         />
-//         <br />
+    const { data, error } = await supabase
+      .from('companies_comments')
+      .insert([{id, created_at, companyid, comments}])
 
-//         <label htmlFor='comments'>Comments:</label>
-//         <input
-//           type='text'
-//           id='comments'
-//           value={comments}
-//           onChange={(e) => setComments(e.target.value)}
-//         />
-//         <br />
+      if(error){
+        console.log(error);
+        setFormError('Please fill in all the fields correctly')
+      }
 
-//         <button>Add data</button>
+      if(data){
+        console.log(data)
+        setFormError(null)
+      }
+  }
 
-//         {formError && <p className="error">{formError}</p>}
-//       </form>
+  return (
+    <div className="page create">
+      <h2>Seeding Companies_comments Table</h2>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor='id'>Id:</label>
+        <input
+          type='text'
+          id='id'
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+        />
+        <br />
 
-//     </div>
-//   )
-// }
+        <label htmlFor='created_at'>created_at:</label>
+        <input
+          type='text'
+          id='created_at'
+          value={created_at}
+          onChange={(e) => setCreatedAt(e.target.value)}
+        />
+        <br />
 
-// export default CreateCompanyComments
+        <label htmlFor='companyid'>Company Id:</label>
+        <input
+          type='text'
+          id='bio'
+          value={companyid}
+          onChange={(e) => setCompanyId(e.target.value)}
+        />
+        <br />
+
+        <label htmlFor='comments'>Comments:</label>
+        <input
+          type='text'
+          id='comments'
+          value={comments}
+          onChange={(e) => setComments(e.target.value)}
+        />
+        <br />
+
+        <button>Add data</button>
+
+        {formError && <p className="error">{formError}</p>}
+      </form>
+
+    </div>
+  )
+}
+
+export default CreateCompanyComments
